@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,9 +10,7 @@ namespace CompanyPlatform.Core.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "AccessoriesImage",
-                table: "Tbl_Accessories");
+            // AccessoriesImage is preserved from initial creation in 20261008085500_Warehouse.
 
             migrationBuilder.RenameColumn(
                 name: "CurrencyId",
@@ -48,12 +46,6 @@ namespace CompanyPlatform.Core.Migrations
                 name: "Id",
                 table: "PriceLists",
                 newName: "CurrencyId");
-
-            migrationBuilder.AddColumn<string>(
-                name: "AccessoriesImage",
-                table: "Tbl_Accessories",
-                type: "nvarchar(max)",
-                nullable: true);
         }
     }
 }

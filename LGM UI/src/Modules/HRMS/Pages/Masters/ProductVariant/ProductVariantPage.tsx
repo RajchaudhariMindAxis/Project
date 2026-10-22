@@ -157,8 +157,7 @@ const ProductVariantPage: React.FC = () => {
           striped
           highlightOnHover
           customStyles={tableStyles}
-          subHeader
-          subHeaderComponent={
+          subHeader={
             <div className="flex items-center gap-2">
               <label className="text-sm text-gray-600">Search:</label>
               <input

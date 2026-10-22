@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -54,6 +54,90 @@ namespace CompanyPlatform.Core.Migrations
                 nullable: false,
                 defaultValue: false);
 
+            // Precondition validation: Ensure no existing legacy data in tbl_Customer exceeds the new column lengths
+            migrationBuilder.Sql(@"
+                IF EXISTS (SELECT 1 FROM [tbl_Customer] WHERE LEN([customer_name]) > 150)
+                BEGIN
+                    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+                    RAISERROR('Precondition failed: tbl_Customer contains customer_name values exceeding 150 characters. Please review data before migrating.', 16, 127) WITH NOWAIT;
+                    SET NOEXEC ON;
+                END
+                IF EXISTS (SELECT 1 FROM [tbl_Customer] WHERE LEN([gst_no]) > 15)
+                BEGIN
+                    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+                    RAISERROR('Precondition failed: tbl_Customer contains gst_no values exceeding 15 characters. Please review data before migrating.', 16, 127) WITH NOWAIT;
+                    SET NOEXEC ON;
+                END
+                IF EXISTS (SELECT 1 FROM [tbl_Customer] WHERE LEN([cin_no]) > 25)
+                BEGIN
+                    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+                    RAISERROR('Precondition failed: tbl_Customer contains cin_no values exceeding 25 characters. Please review data before migrating.', 16, 127) WITH NOWAIT;
+                    SET NOEXEC ON;
+                END
+                IF EXISTS (SELECT 1 FROM [tbl_Customer] WHERE LEN([email_address]) > 150)
+                BEGIN
+                    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+                    RAISERROR('Precondition failed: tbl_Customer contains email_address values exceeding 150 characters. Please review data before migrating.', 16, 127) WITH NOWAIT;
+                    SET NOEXEC ON;
+                END");
+
+            // Safely rename legacy snake_case columns to PascalCase to preserve all existing customer data
+            migrationBuilder.RenameColumn(
+                name: "msme_number",
+                table: "tbl_Customer",
+                newName: "MSMENo");
+
+            migrationBuilder.RenameColumn(
+                name: "gst_no",
+                table: "tbl_Customer",
+                newName: "GSTIN");
+
+            migrationBuilder.RenameColumn(
+                name: "doc_attachment",
+                table: "tbl_Customer",
+                newName: "DocsAttachment");
+
+            migrationBuilder.RenameColumn(
+                name: "company_tan",
+                table: "tbl_Customer",
+                newName: "CustomerTAN");
+
+            migrationBuilder.RenameColumn(
+                name: "customer_short_name",
+                table: "tbl_Customer",
+                newName: "CustomerShortName");
+
+            migrationBuilder.RenameColumn(
+                name: "company_pan",
+                table: "tbl_Customer",
+                newName: "CustomerPAN");
+
+            migrationBuilder.RenameColumn(
+                name: "customer_name",
+                table: "tbl_Customer",
+                newName: "CustomerName");
+
+            migrationBuilder.RenameColumn(
+                name: "customer_code",
+                table: "tbl_Customer",
+                newName: "CustomerCode");
+
+            migrationBuilder.RenameColumn(
+                name: "cin_no",
+                table: "tbl_Customer",
+                newName: "CIN");
+
+            migrationBuilder.RenameColumn(
+                name: "email_address",
+                table: "tbl_Customer",
+                newName: "CustomerEmail");
+
+            migrationBuilder.RenameColumn(
+                name: "mobile_no",
+                table: "tbl_Customer",
+                newName: "CustomerMobile");
+
+            // Alter renamed columns to their final lengths, types, and nullabilities
             migrationBuilder.AlterColumn<string>(
                 name: "MSMENo",
                 table: "tbl_Customer",
@@ -61,7 +145,9 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 50,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(50)",
+                oldMaxLength: 50,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "GSTIN",
@@ -70,7 +156,9 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 15,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(20)",
+                oldMaxLength: 20,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "DocsAttachment",
@@ -78,7 +166,9 @@ namespace CompanyPlatform.Core.Migrations
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerTAN",
@@ -87,7 +177,9 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 20,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(20)",
+                oldMaxLength: 20,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerShortName",
@@ -96,7 +188,9 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 100,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)",
+                oldMaxLength: 100,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerPAN",
@@ -105,7 +199,9 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 20,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(20)",
+                oldMaxLength: 20,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerName",
@@ -114,7 +210,8 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 150,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerCode",
@@ -123,7 +220,8 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 50,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(50)",
+                oldMaxLength: 50);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CIN",
@@ -132,9 +230,31 @@ namespace CompanyPlatform.Core.Migrations
                 maxLength: 25,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(50)",
+                oldMaxLength: 50,
                 oldNullable: true);
 
+            migrationBuilder.AlterColumn<string>(
+                name: "CustomerEmail",
+                table: "tbl_Customer",
+                type: "nvarchar(150)",
+                maxLength: 150,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CustomerMobile",
+                table: "tbl_Customer",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(15)",
+                oldMaxLength: 15);
+
+            // Add new columns (preserve active status by defaulting IsActive to true)
             migrationBuilder.AddColumn<string>(
                 name: "BillingAddress",
                 table: "tbl_Customer",
@@ -143,17 +263,10 @@ namespace CompanyPlatform.Core.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "CustomerEmail",
+                name: "ShippingAddress",
                 table: "tbl_Customer",
-                type: "nvarchar(150)",
-                maxLength: 150,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "CustomerMobile",
-                table: "tbl_Customer",
-                type: "nvarchar(20)",
-                maxLength: 20,
+                type: "nvarchar(500)",
+                maxLength: 500,
                 nullable: true);
 
             migrationBuilder.AddColumn<bool>(
@@ -161,14 +274,7 @@ namespace CompanyPlatform.Core.Migrations
                 table: "tbl_Customer",
                 type: "bit",
                 nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ShippingAddress",
-                table: "tbl_Customer",
-                type: "nvarchar(500)",
-                maxLength: 500,
-                nullable: true);
+                defaultValue: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "AccessoriesName",
@@ -281,8 +387,24 @@ namespace CompanyPlatform.Core.Migrations
                 name: "ProductId",
                 table: "ProductVariant",
                 type: "int",
+                nullable: true);
+
+            migrationBuilder.Sql(@"
+                IF EXISTS (SELECT 1 FROM [ProductVariant] WHERE [ProductId] IS NULL)
+                BEGIN
+                    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+                    RAISERROR('Cannot enforce NOT NULL on ProductVariant.ProductId: existing variant rows exist without an unambiguous ProductId mapping. Please backfill ProductVariant.ProductId before applying this migration.', 16, 127) WITH NOWAIT;
+                    SET NOEXEC ON;
+                END");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "ProductId",
+                table: "ProductVariant",
+                type: "int",
                 nullable: false,
-                defaultValue: 0);
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "VariantCode",
@@ -553,14 +675,6 @@ namespace CompanyPlatform.Core.Migrations
                 table: "tbl_Customer");
 
             migrationBuilder.DropColumn(
-                name: "CustomerEmail",
-                table: "tbl_Customer");
-
-            migrationBuilder.DropColumn(
-                name: "CustomerMobile",
-                table: "tbl_Customer");
-
-            migrationBuilder.DropColumn(
                 name: "IsActive",
                 table: "tbl_Customer");
 
@@ -664,97 +778,123 @@ namespace CompanyPlatform.Core.Migrations
                 nullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "MSMENo",
+                name: "CustomerMobile",
                 table: "tbl_Customer",
-                type: "nvarchar(max)",
+                type: "nvarchar(15)",
+                maxLength: 15,
                 nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(50)",
-                oldMaxLength: 50,
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "GSTIN",
-                table: "tbl_Customer",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(15)",
-                oldMaxLength: 15,
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "DocsAttachment",
-                table: "tbl_Customer",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "CustomerTAN",
-                table: "tbl_Customer",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "nvarchar(20)",
                 oldMaxLength: 20,
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "CustomerShortName",
+                name: "CustomerEmail",
                 table: "tbl_Customer",
-                type: "nvarchar(max)",
+                type: "nvarchar(255)",
+                maxLength: 255,
                 nullable: false,
-                defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
-                oldMaxLength: 100,
+                oldType: "nvarchar(150)",
+                oldMaxLength: 150,
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "CustomerPAN",
+                name: "CIN",
                 table: "tbl_Customer",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
+                type: "nvarchar(50)",
+                maxLength: 50,
+                nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(20)",
-                oldMaxLength: 20,
+                oldType: "nvarchar(25)",
+                oldMaxLength: 25,
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "CustomerName",
                 table: "tbl_Customer",
-                type: "nvarchar(max)",
+                type: "nvarchar(255)",
+                maxLength: 255,
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(150)",
                 oldMaxLength: 150);
 
             migrationBuilder.AlterColumn<string>(
-                name: "CustomerCode",
+                name: "DocsAttachment",
                 table: "tbl_Customer",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(50)",
-                oldMaxLength: 50);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "CIN",
-                table: "tbl_Customer",
-                type: "nvarchar(max)",
+                type: "nvarchar(255)",
+                maxLength: 255,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(25)",
-                oldMaxLength: 25,
+                oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "GSTIN",
+                table: "tbl_Customer",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(15)",
+                oldMaxLength: 15,
+                oldNullable: true);
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerMobile",
+                table: "tbl_Customer",
+                newName: "mobile_no");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerEmail",
+                table: "tbl_Customer",
+                newName: "email_address");
+
+            migrationBuilder.RenameColumn(
+                name: "CIN",
+                table: "tbl_Customer",
+                newName: "cin_no");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerCode",
+                table: "tbl_Customer",
+                newName: "customer_code");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerName",
+                table: "tbl_Customer",
+                newName: "customer_name");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerPAN",
+                table: "tbl_Customer",
+                newName: "company_pan");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerShortName",
+                table: "tbl_Customer",
+                newName: "customer_short_name");
+
+            migrationBuilder.RenameColumn(
+                name: "CustomerTAN",
+                table: "tbl_Customer",
+                newName: "company_tan");
+
+            migrationBuilder.RenameColumn(
+                name: "DocsAttachment",
+                table: "tbl_Customer",
+                newName: "doc_attachment");
+
+            migrationBuilder.RenameColumn(
+                name: "GSTIN",
+                table: "tbl_Customer",
+                newName: "gst_no");
+
+            migrationBuilder.RenameColumn(
+                name: "MSMENo",
+                table: "tbl_Customer",
+                newName: "msme_number");
 
             migrationBuilder.AlterColumn<string>(
                 name: "AccessoriesName",

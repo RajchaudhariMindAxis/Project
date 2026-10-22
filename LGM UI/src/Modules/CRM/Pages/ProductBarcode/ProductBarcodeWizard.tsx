@@ -21,7 +21,7 @@ interface IdOption {
   name: string;
 }
 
-type IdField = "productId" | "variantId" | "accessoryId";
+// type IdField = "productId" | "variantId" | "accessoryId";
 
 const emptyBarcode: ProductBarcode = {
   id: 0,

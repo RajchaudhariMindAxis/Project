@@ -1,6 +1,6 @@
-const BASE_URL = "https://localhost:7296/api";
+// const BASE_URL = "https://localhost:7296/api";
 // const BASE_URL = "https://gaxceapi.gaxce.com/api";
-// const BASE_URL = "https://gaxcesensors-001-site2.ltempurl.com/api";
+const BASE_URL = "https://shankarma7-001-site1.itempurl.com/api";
 
 export const API_ENDPOINTS = {
   // ExchangeRate: `https://v6.exchangerate-api.com/v6/c1d2fd789cda1a02192b1c64/latest/INR`,

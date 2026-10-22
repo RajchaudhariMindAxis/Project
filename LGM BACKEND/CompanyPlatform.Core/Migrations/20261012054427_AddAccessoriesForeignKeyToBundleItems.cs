@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,39 +8,14 @@ namespace CompanyPlatform.Core.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "AccessoriesId",
-                table: "BundleItems",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BundleItems_AccessoriesId",
-                table: "BundleItems",
-                column: "AccessoriesId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_BundleItems_Accessories_AccessoriesId",
-                table: "BundleItems",
-                column: "AccessoriesId",
-                principalTable: "Accessories",
-                principalColumn: "AccessoriesId",
-                onDelete: ReferentialAction.Restrict);
+            // AccessoriesId and FK_BundleItems_Tbl_Accessories_AccessoriesId
+            // are configured in the immediately following migration:
+            // 20261012060545_RemoveItemIdAndItemTypeFromBundleItems.
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_BundleItems_Accessories_AccessoriesId",
-                table: "BundleItems");
-
-            migrationBuilder.DropIndex(
-                name: "IX_BundleItems_AccessoriesId",
-                table: "BundleItems");
-
-            migrationBuilder.DropColumn(
-                name: "AccessoriesId",
-                table: "BundleItems");
+            // Intentionally empty. Managed by 20261012060545_RemoveItemIdAndItemTypeFromBundleItems.
         }
     }
 }

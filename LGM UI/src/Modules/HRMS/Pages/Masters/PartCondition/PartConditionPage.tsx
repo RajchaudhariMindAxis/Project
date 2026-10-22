@@ -154,8 +154,7 @@ const PartConditionPage: React.FC = () => {
           highlightOnHover
           customStyles={tableStyles}
           progressPending={isLoading}
-          subHeader
-          subHeaderComponent={
+          subHeader={
             <div className="flex items-center gap-2">
               <label className="text-sm text-gray-600">Search:</label>
               <input

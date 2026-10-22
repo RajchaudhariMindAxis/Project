@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyPlatform.Core.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20261017072308_AddAccessorySKU")]
-    partial class AddAccessorySKU
+    [Migration("20261021125852_firstNew")]
+    partial class firstNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -5411,7 +5411,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasKey("CompanyId");
 
-                    b.ToTable("Tbl_Companies");
+                    b.ToTable("Tbl_Companies", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.CompanyBankDetail", b =>
@@ -7242,7 +7242,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Branch");
+                    b.ToTable("Branch", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.Inventory.Brand", b =>
@@ -7433,7 +7433,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Warehouse");
+                    b.ToTable("Warehouse", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.LeaveCreditLedger", b =>

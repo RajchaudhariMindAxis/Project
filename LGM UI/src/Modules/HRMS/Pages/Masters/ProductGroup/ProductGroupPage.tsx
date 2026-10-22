@@ -128,8 +128,7 @@ const ProductGroupPage: React.FC = () => {
           )}
           pagination
           customStyles={tableStyles}
-          subHeader
-          subHeaderComponent={
+            subHeader={
             <input
               type="text"
               placeholder="Search..."
