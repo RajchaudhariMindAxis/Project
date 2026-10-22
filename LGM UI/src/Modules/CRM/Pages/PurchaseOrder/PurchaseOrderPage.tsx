@@ -212,8 +212,7 @@ const PurchaseOrderPage: React.FC = () => {
           highlightOnHover
           progressPending={isLoading}
           progressComponent={<LogoLoader />}
-          subHeader
-          subHeaderComponent={
+          subHeader={
             <div className="flex items-center justify-end w-full">
               <label className="text-gray-600 mr-2">Search:</label>
               <input

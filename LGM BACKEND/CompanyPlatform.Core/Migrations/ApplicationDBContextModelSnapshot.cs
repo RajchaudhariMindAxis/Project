@@ -5408,7 +5408,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasKey("CompanyId");
 
-                    b.ToTable("Tbl_Companies");
+                    b.ToTable("Tbl_Companies", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.CompanyBankDetail", b =>
@@ -7239,7 +7239,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Branch");
+                    b.ToTable("Branch", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.Inventory.Brand", b =>
@@ -7430,7 +7430,7 @@ namespace CompanyPlatform.Core.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Warehouse");
+                    b.ToTable("Warehouse", (string)null);
                 });
 
             modelBuilder.Entity("CompanyPlatform.Core.Models.LeaveCreditLedger", b =>

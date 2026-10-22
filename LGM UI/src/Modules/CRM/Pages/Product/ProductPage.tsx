@@ -400,8 +400,8 @@ const ProductPage: React.FC = () => {
           progressPending={isLoading}
           progressComponent={<LogoLoader />}
           customStyles={listingTableStyles}
-          subHeader
-          subHeaderComponent={subHeaderComponent}
+          // subHeader
+          subHeader={subHeaderComponent}
           persistTableHead
         />
       </div>

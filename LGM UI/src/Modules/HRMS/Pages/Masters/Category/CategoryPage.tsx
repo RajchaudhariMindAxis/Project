@@ -188,8 +188,7 @@ const CategoryPage: React.FC = () => {
           pagination
           striped
           highlightOnHover
-          subHeader
-          subHeaderComponent={subHeaderComponent}
+          subHeader={subHeaderComponent}
           customStyles={tableStyles}
           progressPending={isLoading}
         />

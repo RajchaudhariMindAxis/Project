@@ -5,7 +5,7 @@
 namespace CompanyPlatform.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAccessorySKU : Migration
+    public partial class firstNew : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

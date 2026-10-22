@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -11,11 +11,7 @@ namespace CompanyPlatform.Core.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ProductImage",
-                table: "Tbl_Products",
-                type: "nvarchar(max)",
-                nullable: true);
+            // ProductImage is preserved from initial creation.
 
             migrationBuilder.CreateTable(
                 name: "AccessoryPrices",
@@ -113,10 +109,6 @@ namespace CompanyPlatform.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductPrices");
-
-            migrationBuilder.DropColumn(
-                name: "ProductImage",
-                table: "Tbl_Products");
         }
     }
 }

@@ -275,6 +275,25 @@ namespace CompanyPlatform.Core.Data
         {
             base.OnModelCreating(builder);
 
+            //builder.Entity<Company>().ToTable("Company");
+
+            builder.Entity<Company>().ToTable("Tbl_Companies");
+            builder.Entity<Branch>().ToTable("Branch");
+            builder.Entity<Warehouse>().ToTable("Warehouse");
+            builder.Entity<Employees>().ToTable("tbl_Employee");
+
+            builder.Entity<Employees>()
+                .HasOne(e => e.Company)
+                .WithMany(c => c.Employees)
+                .HasForeignKey(e => e.CompanyId)
+                .IsRequired(false);
+
+            builder.Entity<Employees>()
+                .HasOne(e => e.Level)
+                .WithMany()
+                .HasForeignKey(e => e.LevelID)
+                .IsRequired(false);
+
             builder.Entity<ApplicationUser>()
                 .HasOne(a => a.Employee)
                 .WithOne(e => e.ApplicationUser)

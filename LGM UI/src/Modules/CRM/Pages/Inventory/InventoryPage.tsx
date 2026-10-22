@@ -334,8 +334,8 @@ const InventoryPage: React.FC = () => {
           customStyles={listingTableStyles}
           progressPending={isLoading}
           progressComponent={<LogoLoader />}
-          subHeader
-          subHeaderComponent={subHeaderComponent}
+          // subHeader
+          subHeader={subHeaderComponent}
           persistTableHead
         />
       </div>

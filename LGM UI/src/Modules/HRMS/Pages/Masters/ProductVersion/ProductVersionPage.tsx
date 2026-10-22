@@ -94,8 +94,7 @@ const ProductVersionPage: React.FC = () => {
                     highlightOnHover
                     customStyles={tableStyles}
                     progressPending={isLoading}
-                    subHeader
-                    subHeaderComponent={
+                    subHeader={
                         <div className="flex items-center gap-2">
                             <label className="text-sm text-gray-600">Search:</label>
                             <input type="text" className="border border-gray-300 p-1.5 rounded-md outline-none focus:border-blue-500 w-64" value={filterText} onChange={e => setFilterText(e.target.value)} />
